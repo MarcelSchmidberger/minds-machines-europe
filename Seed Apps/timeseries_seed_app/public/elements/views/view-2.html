@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/px-dropdown/px-dropdown.html">
+<link rel="import" href="../../bower_components/px-datetime-picker/px-datetime-picker.html">
 <link rel="import" href="../../bower_components/px-vis-timeseries/px-vis-timeseries.html">
 <link rel="import" href="../df-timeseries-ajax-client/df-timeseries-ajax-client.html">
 
@@ -20,12 +21,20 @@ import is done in ge-app since it is needed by both views
                                    raw-ts-data="{{rawTsData}}">
         </df-timeseries-ajax-client>
         <px-card >
-            <px-dropdown display-value="Select" selected-key="{{selectedTagKey}}">
+            <px-dropdown display-value="Select substation" selected-key="{{selectedTagKey}}">
                 <px-dropdown-content
                     max-cont-character-width="50"
-                    items='[{"key": "1", "val": "Knockroe"},{"key": "2", "val": "Letterkenny Dromore"},{"key": "3", "val": "Malahide Castle"}, {"key": "4", "val": "Mullingar"}, {"key": "5", "val": "Shannon Airport Area"}]'>
+                    items='[[tsTagList]]'>
                 </px-dropdown-content>
             </px-dropdown>
+            <px-dropdown display-value="Select load type" selected-key="{{selectedTagKey}}">
+                <px-dropdown-content
+                    max-cont-character-width="50"
+                    items='[{"key": "1", "val": "Residential"},{"key": "2", "val": "Ind/Com"},{"key": "3", "val": "Mixed"}]'>
+                </px-dropdown-content>
+            </px-dropdown>
+            <px-datetime-picker hide-time="true" date-format="YYYY/MM/DD" time-format="HH:mm:ss" time-zone="UTC" show-time-zone="abbreviatedText" date-time="2016-01-05T05:30:00.000Z" show-buttons="true">
+            </px-datetime-picker>
             <div>
                 <div>
                     <px-vis-timeseries
@@ -117,7 +126,7 @@ import is done in ge-app since it is needed by both views
                 if (this.selectedTagKey) {
                     this.selectedTag = [
                         {
-                            name: this.rawTsTagData.results[Number(this.selectedTagKey)],
+                            name: this.rawTsTagData.results[2],
                             limit: 100,
                             order: "desc"
                         }

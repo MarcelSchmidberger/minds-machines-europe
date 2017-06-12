@@ -1,6 +1,6 @@
 ---
 applications:
-  - name: lichtblau
+  - name: bisbaldi
     memory: 512M
     buildpack: nodejs_buildpack
     command: node server/app.js

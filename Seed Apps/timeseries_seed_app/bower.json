@@ -1,5 +1,5 @@
 {
-  "name": "ge__app",
+  "name": "lichtblau",
   "version": "0.1.0",
   "private": true,
   "ignore": [
@@ -41,5 +41,8 @@
     "px-spacing-design": "0.4.x",
     "px-layout-design": "0.4.x",
     "web-component-tester": "^6.0.0"
+  },
+  "resolutions": {
+    "lodash": "4.16.x"
   }
 }

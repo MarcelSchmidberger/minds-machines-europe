@@ -8,9 +8,9 @@ yarn install && bower install
 ```
 
 To customize the application name do a global search and
-replace of `ge__app` and `your__app__title`.
+replace of `lichtblau` and `lichtblau`.
 
-`ge__app` is the name used in `package.json`, `bower.json` and
+`lichtblau` is the name used in `package.json`, `bower.json` and
 other internal files.
 
-`your__app__title` is the name used in user-facing files like `public/_index.html`.
+`lichtblau` is the name used in user-facing files like `public/_index.html`.

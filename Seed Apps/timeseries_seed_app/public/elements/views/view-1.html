@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/px-dropdown/px-dropdown.html">
 <link rel="import" href="../../bower_components/px-vis-timeseries/px-vis-timeseries.html">
+<link rel="import" href="../../bower_components/px-datetime-picker/px-datetime-picker.html">
 <link rel="import" href="../df-timeseries-ajax-client/df-timeseries-ajax-client.html">
 
 <!--
@@ -16,9 +17,11 @@ import is done in ge-app since it is needed by both views
                                    raw-ts-data="{{rawTsTagData}}" auto></df-timeseries-ajax-client>
         <df-timeseries-ajax-client id="tsDataClient" start="10y-ago"
                                    service-endpoint="/api/MMEurope_timeseries_loadData/v1/datapoints"
-                                   tags="[[selectedTag]]"
+                                   tags="[[selectedTag]]" start="{{tsStart}}" end="{{tsEnd}}"
                                    raw-ts-data="{{rawTsData}}"></df-timeseries-ajax-client>
         <px-card >
+            <px-datetime-picker id="startDatetime" hide-time="true" date-format="YYYY/MM/DD" time-format="HH:mm:ss" time-zone="UTC" show-time-zone="abbreviatedText" date-time="{{currentSelectedDateTime}}" show-buttons="true">
+            </px-datetime-picker>
             <px-dropdown display-value="Select" selected-key="{{selectedTagKey}}">
                 <px-dropdown-content
                     max-cont-character-width="50"
@@ -82,6 +85,17 @@ import is done in ge-app since it is needed by both views
                 selectedTag: {
                     type: String
                 },
+                tsStart: {
+                    type: int
+                },
+                tsEnd: {
+                    type: int
+                },
+                currentSelectedDateTime: {
+                    type: String,
+                    value: "2016-01-05T05:30:00.000Z",
+                    defaultValue: "2016-01-05T05:30:00.000Z"
+                },
                 chartConfig: {
                     type: Object
                 },
@@ -95,17 +109,19 @@ import is done in ge-app since it is needed by both views
             ready: function () {
                 console.log("Dashboard ready");
             },
-
             onRawTsTagDataChanged: function () {
 
                 if (this.rawTsTagData.results) {
                     let choices = [];
 
                     this.rawTsTagData.results.forEach(function (element, index) {
-                        choices.push({
-                            key: index.toString(),
-                            val: element
-                        });
+                        if(!element.includes("Weather")){
+                            element = element.replace("LoadForecasting/LoadData", "");
+                            choices.push({
+                                key: index.toString(),
+                                val: element
+                            });
+                        }
                     });
                     this.tsTagList = choices;
                 }
@@ -116,10 +132,13 @@ import is done in ge-app since it is needed by both views
                     this.selectedTag = [
                         {
                             name: this.rawTsTagData.results[Number(this.selectedTagKey)],
-                            limit: 100,
+                            limit: 48,
                             order: "desc"
                         }
                     ];
+                    this.tsStart = Date.parse(this.currentSelectedDateTime);
+                    this.tsEnd = Date.parse(this.currentSelectedDateTime)+86400000;
+                    alert(this.tsStart + " | " + this.tsEnd);
                     this.$.tsDataClient.generateRequest();
                 }
             },
